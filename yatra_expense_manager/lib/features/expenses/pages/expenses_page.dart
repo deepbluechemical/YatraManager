@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:yatra_expense_manager/constants/navigation_constants.dart';
+import 'package:yatra_expense_manager/models/expense_category_model.dart';
+import 'package:yatra_expense_manager/models/expense_model.dart';
 import 'package:yatra_expense_manager/theme/palette.dart';
 
 class ExpensesPage extends StatelessWidget {
@@ -7,6 +9,51 @@ class ExpensesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final expenses = <ExpenseModel>[
+      ExpenseModel(
+        category: ExpenseCategoryModel(
+          title: "Transportation",
+        ),
+        amount: 5000,
+        notes: 'From delti to bir',
+      ),
+      ExpenseModel(
+          category: ExpenseCategoryModel(
+            title: "Entertainment",
+          ),
+          amount: 4500,
+          notes: 'Club fees'),
+      ExpenseModel(
+          category: ExpenseCategoryModel(
+            title: "Drinks",
+          ),
+          amount: 600,
+          notes: 'Beer and Wiskey'),
+      ExpenseModel(
+          category: ExpenseCategoryModel(
+            title: "Restaurants",
+          ),
+          amount: 6000,
+          notes: 'Food in delhi darbar'),
+      ExpenseModel(
+          category: ExpenseCategoryModel(
+            title: "Drinks",
+          ),
+          amount: 800,
+          notes: 'Drinks in bar'),
+      ExpenseModel(
+          category: ExpenseCategoryModel(
+            title: "Activities",
+          ),
+          amount: 9000,
+          notes: 'Paraglyding and other'),
+      ExpenseModel(
+          category: ExpenseCategoryModel(
+            title: "Transportation",
+          ),
+          amount: 7900,
+          notes: 'Bir to Delhi'),
+    ];
     return Scaffold(
       backgroundColor: Palette.backgroundColor,
       appBar: AppBar(
@@ -109,22 +156,68 @@ class ExpensesPage extends StatelessWidget {
           ),
 
           // scroll view all expenses here.
-          SingleChildScrollView(
-            child: Container(
-              height: 500,
-              child: ListView.builder(
-                itemCount: 50,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: ListTile(
-                      title: Text("Hello"),
+          Expanded(
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: expenses.length,
+              itemBuilder: (context, index) {
+                // date sort
+                expenses.sort((a, b) {
+                  //sorting in ascending order
+                  return DateTime.parse(a.dateTime.toString())
+                      .compareTo(DateTime.parse(b.dateTime.toString()));
+                });
+
+                return Card(
+                  color: Palette.containerColor,
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.green,
+                      child: Icon(
+                        Icons.restaurant_menu,
+                        color: Colors.white,
+                      ),
                     ),
-                  );
-                },
-              ),
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          expenses[index].notes,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          expenses[index].category.title,
+                          style: TextStyle(
+                            color: Palette.textColorOnContainer,
+                          ),
+                        ),
+                      ],
+                    ),
+                    trailing: Text(
+                      expenses[index].amount.toString(),
+                      style: TextStyle(
+                        fontSize: 18.0,
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.redAccent,
+        mini: true,
+        shape: CircleBorder(),
+        onPressed: () => Navigator.of(context)
+            .pushNamed(NavigationConstants.selectCategoryPage),
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: [

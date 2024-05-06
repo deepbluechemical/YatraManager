@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:yatra_expense_manager/constants/navigation_constants.dart';
+import 'package:yatra_expense_manager/features/expenses/pages/add_expense_page.dart';
+import 'package:yatra_expense_manager/features/expenses/pages/select_category_page.dart';
 import 'package:yatra_expense_manager/features/expenses/pages/expenses_page.dart';
 import 'package:yatra_expense_manager/theme/app_theme.dart';
 
@@ -13,9 +16,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Yatra Manager Application',
       theme: AppTheme.theme,
-      home: const ExpensesPage(),
+      initialRoute: NavigationConstants.expensePage,
+      routes: {
+        NavigationConstants.expensePage: (context) => const ExpensesPage(),
+        NavigationConstants.addExpensePage: (context) => const AddExpensePage(),
+        NavigationConstants.selectCategoryPage: (context) =>
+            const SelectCategoryPage(),
+      },
     );
   }
 }
