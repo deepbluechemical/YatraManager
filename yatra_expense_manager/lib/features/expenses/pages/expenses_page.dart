@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yatra_expense_manager/constants/navigation_constants.dart';
+import 'package:yatra_expense_manager/features/expenses/widgets/summary_widget.dart';
 import 'package:yatra_expense_manager/models/expense_category_model.dart';
 import 'package:yatra_expense_manager/models/expense_model.dart';
 import 'package:yatra_expense_manager/theme/palette.dart';
@@ -73,72 +74,21 @@ class ExpensesPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              // Containers for displaying total expenses.
-              Container(
-                width: 180,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 2,
-                  vertical: 5,
-                ),
-                decoration: BoxDecoration(
-                  color: Palette.containerColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  children: [
-                    const Text(
-                      "TOTAL",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Palette.textColorOnContainer,
-                      ),
-                    ),
-                    const Text(
-                      "\u{20B9} 1235.00",
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
+              // displaying summary.
+              SummaryWidget(
+                title: 'Today',
+                amount: 500.56,
               ),
-              Container(
-                width: 180,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 2,
-                  vertical: 5,
-                ),
-                decoration: BoxDecoration(
-                  color: Palette.containerColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  children: [
-                    const Text(
-                      "TODAY",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Palette.textColorOnContainer,
-                      ),
-                    ),
-                    const Text(
-                      "\u{20B9} 500.00",
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
+              SummaryWidget(
+                title: 'Overall',
+                amount: 15000.63,
               ),
             ],
           ),
           SizedBox(
             height: 10.0,
           ),
+          // Expenses text
           Container(
             padding: EdgeInsets.symmetric(
               vertical: 3,
@@ -208,38 +158,37 @@ class ExpensesPage extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.redAccent,
-        mini: true,
-        shape: CircleBorder(),
-        onPressed: () => Navigator.of(context)
-            .pushNamed(NavigationConstants.selectCategoryPage),
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-      ),
+      floatingActionButton: addFloatingButton(context),
       bottomNavigationBar: BottomNavigationBar(
         items: [
-          BottomNavigationBarItem(
-            label: "Expenses",
-            icon: Icon(
-              Icons.home,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: "Stats",
-            icon: Icon(
-              Icons.stacked_bar_chart_rounded,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: "Settings",
-            icon: Icon(
-              Icons.settings,
-            ),
-          ),
+          bottomNavBar(label: "Expenses", icon: Icons.home),
+          bottomNavBar(label: "Stats", icon: Icons.stacked_bar_chart_rounded),
+          bottomNavBar(label: "Settings", icon: Icons.settings),
         ],
+      ),
+    );
+  }
+
+  BottomNavigationBarItem bottomNavBar({
+    required label,
+    IconData? icon,
+  }) {
+    return BottomNavigationBarItem(
+      label: label,
+      icon: Icon(icon),
+    );
+  }
+
+  FloatingActionButton addFloatingButton(BuildContext context) {
+    return FloatingActionButton(
+      backgroundColor: Colors.redAccent,
+      mini: true,
+      shape: CircleBorder(),
+      onPressed: () => Navigator.of(context)
+          .pushNamed(NavigationConstants.selectCategoryPage),
+      child: Icon(
+        Icons.add,
+        color: Colors.white,
       ),
     );
   }
